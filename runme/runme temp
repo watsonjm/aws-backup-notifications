@@ -1,0 +1,3 @@
+terraform init -var-file=./config/temp.tfvars -reconfigure 
+terraform plan -var-file=./config/temp.tfvars -out temp.tfplan
+terraform apply temp.tfplan
