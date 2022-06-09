@@ -21,5 +21,6 @@ You must configure the tags on resources yourself, this code will create the bac
 
 ### Who do I talk to? ###
 
+* [Adam Abel](mailto:aabel@resultant.com)
 * [Richard Cooper](mailto:rcooper@resultant.com)
 * [John Watson](mailto:jwatson@resultant.com)
