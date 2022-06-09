@@ -219,9 +219,9 @@ resource "aws_cloudwatch_event_rule" "ebs_backups" {
 }
 
 resource "aws_cloudwatch_event_target" "ebs_sns" {
-    arn            = module.sns_emails.sns_topic.arn
-    rule           = aws_cloudwatch_event_rule.ebs_backups.name
-    target_id      = "backup-radar-ebs-sns"
+  arn       = module.sns_emails.sns_topic.arn
+  rule      = aws_cloudwatch_event_rule.ebs_backups.name
+  target_id = "backup-radar-ebs-sns"
 }
 
 # This notification is for the entire backup job, probably more useful
@@ -242,7 +242,7 @@ resource "aws_cloudwatch_event_rule" "ec2_backups" {
 }
 
 resource "aws_cloudwatch_event_target" "ec2_sns" {
-    arn            = module.sns_emails.sns_topic.arn
-    rule           = aws_cloudwatch_event_rule.ec2_backups.name
-    target_id      = "backup-radar-ec2-sns"
+  arn       = module.sns_emails.sns_topic.arn
+  rule      = aws_cloudwatch_event_rule.ec2_backups.name
+  target_id = "backup-radar-ec2-sns"
 }
