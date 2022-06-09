@@ -189,8 +189,60 @@ data "aws_iam_policy_document" "sns" {
   }
 }
 
+# This notification is straight from backup vault
 resource "aws_backup_vault_notifications" "backups" {
   backup_vault_name   = aws_backup_vault.this.name
   sns_topic_arn       = module.sns_emails.sns_topic.arn
   backup_vault_events = ["BACKUP_JOB_COMPLETED", "BACKUP_JOB_SUCCESSFUL", "BACKUP_JOB_FAILED"]
+}
+
+#this notification is the one Backup Radar recommends, but is not thorough
+resource "aws_cloudwatch_event_rule" "ebs_backups" {
+  name        = "backup-radar"
+  description = "Sends backup info to backup radar"
+
+  event_pattern = jsonencode(
+    {
+      detail = {
+        event = [
+          "createSnapshot",
+        ]
+      }
+      detail-type = [
+        "EBS Snapshot Notification",
+      ]
+      source = [
+        "aws.ec2",
+      ]
+    }
+  )
+}
+
+resource "aws_cloudwatch_event_target" "ebs_sns" {
+    arn            = module.sns_emails.sns_topic.arn
+    rule           = aws_cloudwatch_event_rule.ebs_backups.name
+    target_id      = "backup-radar-ebs-sns"
+}
+
+# This notification is for the entire backup job, probably more useful
+resource "aws_cloudwatch_event_rule" "ec2_backups" {
+  name        = "backup-radar"
+  description = "Sends backup info to backup radar"
+
+  event_pattern = jsonencode(
+    {
+      detail-type = [
+        "Backup Job State Change",
+      ]
+      source = [
+        "aws.backup",
+      ]
+    }
+  )
+}
+
+resource "aws_cloudwatch_event_target" "ec2_sns" {
+    arn            = module.sns_emails.sns_topic.arn
+    rule           = aws_cloudwatch_event_rule.ec2_backups.name
+    target_id      = "backup-radar-ec2-sns"
 }
