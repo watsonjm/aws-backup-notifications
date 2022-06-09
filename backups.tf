@@ -198,7 +198,7 @@ resource "aws_backup_vault_notifications" "backups" {
 
 #this notification is the one Backup Radar recommends, but is not thorough
 resource "aws_cloudwatch_event_rule" "ebs_backups" {
-  name        = "backup-radar"
+  name        = "backup-radar-ebs"
   description = "Sends backup info to backup radar"
 
   event_pattern = jsonencode(
@@ -226,7 +226,7 @@ resource "aws_cloudwatch_event_target" "ebs_sns" {
 
 # This notification is for the entire backup job, probably more useful
 resource "aws_cloudwatch_event_rule" "ec2_backups" {
-  name        = "backup-radar"
+  name        = "backup-radar-ec2"
   description = "Sends backup info to backup radar"
 
   event_pattern = jsonencode(
