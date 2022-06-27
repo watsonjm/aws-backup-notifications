@@ -18,3 +18,8 @@ variable "backup_radar_emails" {
   default     = []
   description = "List of emails that will receive SNS notifications for AWS Backup jobs."
 }
+variable "use_default_vault" {
+  type        = bool
+  default     = false
+  description = "Determines whether to use default backup vault or create one."
+}

@@ -1,4 +1,5 @@
 resource "aws_backup_vault" "this" {
+  count       = var.use_default_vault ? 0 : 1
   name        = "${local.name_tag}-backup-vault"
   kms_key_arn = aws_kms_key.this.arn
   tags        = { Name = "${local.name_tag}-backup-vault" }
@@ -38,7 +39,7 @@ resource "aws_backup_plan" "plan1" {
     enable_continuous_backup = false
     recovery_point_tags      = local.common_tags
     schedule                 = "cron(0 5 ? * * *)"
-    target_vault_name        = aws_backup_vault.this.name
+    target_vault_name        = var.use_default_vault ? "Default" : aws_backup_vault.this[0].name
 
     lifecycle {
       cold_storage_after = 0
@@ -59,7 +60,7 @@ resource "aws_backup_plan" "plan2" {
     enable_continuous_backup = false
     recovery_point_tags      = local.common_tags
     schedule                 = "cron(0 5 ? * * *)"
-    target_vault_name        = aws_backup_vault.this.name
+    target_vault_name        = var.use_default_vault ? "Default" : aws_backup_vault.this[0].name
 
     lifecycle {
       cold_storage_after = 0
@@ -73,7 +74,7 @@ resource "aws_backup_plan" "plan2" {
     enable_continuous_backup = false
     recovery_point_tags      = local.common_tags
     schedule                 = "cron(0 5 1 * ? *)"
-    target_vault_name        = aws_backup_vault.this.name
+    target_vault_name        = var.use_default_vault ? "Default" : aws_backup_vault.this[0].name
 
     lifecycle {
       cold_storage_after = 30
@@ -94,7 +95,7 @@ resource "aws_backup_plan" "plan3" {
     enable_continuous_backup = false
     recovery_point_tags      = local.common_tags
     schedule                 = "cron(0 5 ? * * *)"
-    target_vault_name        = aws_backup_vault.this.name
+    target_vault_name        = var.use_default_vault ? "Default" : aws_backup_vault.this[0].name
 
     lifecycle {
       cold_storage_after = 0
@@ -108,7 +109,7 @@ resource "aws_backup_plan" "plan3" {
     enable_continuous_backup = false
     recovery_point_tags      = local.common_tags
     schedule                 = "cron(0 5 ? * 7 *)"
-    target_vault_name        = aws_backup_vault.this.name
+    target_vault_name        = var.use_default_vault ? "Default" : aws_backup_vault.this[0].name
 
     lifecycle {
       cold_storage_after = 0
@@ -122,7 +123,7 @@ resource "aws_backup_plan" "plan3" {
     enable_continuous_backup = false
     recovery_point_tags      = local.common_tags
     schedule                 = "cron(0 5 1 * ? *)"
-    target_vault_name        = aws_backup_vault.this.name
+    target_vault_name        = var.use_default_vault ? "Default" : aws_backup_vault.this[0].name
 
     lifecycle {
       cold_storage_after = 90
@@ -195,7 +196,7 @@ data "aws_iam_policy_document" "sns" {
 
 # This notification is straight from backup vault
 resource "aws_backup_vault_notifications" "backups" {
-  backup_vault_name   = aws_backup_vault.this.name
+  backup_vault_name   = var.use_default_vault ? "Default" : aws_backup_vault.this[0].name
   sns_topic_arn       = module.sns_emails.sns_topic.arn
   backup_vault_events = ["BACKUP_JOB_COMPLETED", "BACKUP_JOB_SUCCESSFUL", "BACKUP_JOB_FAILED"]
 }

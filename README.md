@@ -11,9 +11,14 @@ You must configure the tags on resources yourself, this code will create the bac
 
 ### How do I get set up? ###
 
+* Install Git
+    1. open command line and change to directory where you want to clone repo
+    2. run git clone
+    3. set up ssh key for bitbucket https://support.atlassian.com/bitbucket-cloud/docs/set-up-an-ssh-key/
 * [Download Terraform](https://www.terraform.io/downloads)
     1. Terraform is a simple executable that needs to be in your [PATH](https://docs.microsoft.com/en-us/previous-versions/office/developer/sharepoint-2010/ee537574(v=office.14)). If you want to install it instead, you can follow the [instructions here](https://learn.hashicorp.com/tutorials/terraform/install-cli).
 * You'll need an AWS Access Key ID and AWS Secret Access Key for each AWS account where you plan to use this. These 2 variables will need to be updated locally before running in a new AWS account.
+    1. Get your [AWS secret access key and ID](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys)
     1. [runme/env_vars](/runme/env_vars) shows how to set up these variables for PowerShell or Bash.
     2. You can also accomplish all of this by [installing AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html), but that is more complicated for this particular scenario.
 * Once you have your AWS credential in environment variables, you can run ```terraform init```, ```terraform plan```, and ```terraform apply```. The exact commands needed are in [runme/runme_temp](/runme/runme_temp). This will initialize terraform, then the plan will show you what it wants to do, and if you like the plan, then you can apply it.
