@@ -6,3 +6,4 @@ common_tags = { #environment tag automatically added, add programmatic tags in l
   created_by = "terraform"
 }
 backup_radar_emails = ["jwatson@resultant.com"]
+use_default_vault   = true
