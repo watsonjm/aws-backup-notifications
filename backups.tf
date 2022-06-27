@@ -175,8 +175,12 @@ data "aws_iam_policy_document" "sns" {
     actions = ["SNS:Publish"]
     effect  = "Allow"
     principals {
-      type        = "Service"
-      identifiers = ["backup.amazonaws.com"]
+      type = "Service"
+      identifiers = [
+        "backup.amazonaws.com",
+        "cloudwatch.amazonaws.com",
+        "events.amazonaws.com"
+      ]
     }
     resources = [
       module.sns_emails.sns_topic.arn,
