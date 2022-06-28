@@ -186,11 +186,6 @@ data "aws_iam_policy_document" "sns" {
     resources = [
       module.sns_emails.sns_topic.arn,
     ]
-    condition {
-      test     = "StringEquals"
-      variable = "AWS:SourceOwner"
-      values   = [data.aws_caller_identity.current.account_id]
-    }
   }
 }
 
